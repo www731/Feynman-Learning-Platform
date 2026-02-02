@@ -1,0 +1,10 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.feynman-platform.app
+productName: Feynman Learning Platform
+files:
+  - filter:
+      - build/**/*
+      - electron.js
+electronVersion: 31.7.7

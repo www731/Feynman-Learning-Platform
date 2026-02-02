@@ -1,0 +1,13 @@
+front/word/
+front/build/
+front/dist/
+requied/
+.trae/
+check_experiment.exe
+development_troubleshooting_log.md
+node_modules/
+front/node_modules/
+feynman-platform-backend/node_modules/
+feynman-platform-backend/vector_store/
+front/.vite/
+front/.cache/
