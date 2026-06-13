@@ -9,6 +9,11 @@ app = Flask(__name__)
 
 # 改为懒加载，避免启动阶段阻塞或失败
 model = None
+MODEL_NAME = os.environ.get('WHISPER_MODEL', 'base')
+
+@app.get('/healthz')
+def healthz():
+    return jsonify({"ok": True, "model": MODEL_NAME})
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe_audio():
@@ -67,7 +72,7 @@ def transcribe_audio():
         global model
         if model is None:
             print("首次请求，正在加载Whisper模型...")
-            model = whisper.load_model("base")
+            model = whisper.load_model(MODEL_NAME)
             print("模型加载完毕！")
         print(f"开始转录: path={temp_path}, mimetype={mimetype}")
         result = model.transcribe(temp_path)
@@ -83,4 +88,5 @@ def transcribe_audio():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    port = int(os.environ.get('PORT', '5001'))
+    app.run(host='0.0.0.0', port=port)
