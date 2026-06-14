@@ -1,2 +1,26 @@
 node_modules
 .env
+
+# Python test env
+tests/.env.test
+tests/.env.test.local
+tests/.env.test.*.local
+
+# Python virtual env
+.venv/
+.venv-test/
+venv/
+
+# Pytest / Python cache
+.pytest_cache/
+**/__pycache__/
+**/*.pyc
+.coverage
+htmlcov/
+report.html
+
+# Allure reports
+allure-results/
+allure-report/
+tests/allure-results/
+tests/allure-report/

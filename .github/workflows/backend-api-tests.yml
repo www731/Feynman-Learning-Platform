@@ -1,0 +1,97 @@
+name: Backend API Tests
+
+on:
+  push:
+    paths:
+      - "feynman-platform-backend/tests/**"
+      - "feynman-platform-backend/routes/**"
+      - "feynman-platform-backend/controllers/**"
+      - "feynman-platform-backend/middleware/**"
+      - "feynman-platform-backend/models/**"
+      - "feynman-platform-backend/services/**"
+      - "feynman-platform-backend/package.json"
+      - "feynman-platform-backend/package-lock.json"
+      - ".github/workflows/backend-api-tests.yml"
+  pull_request:
+    paths:
+      - "feynman-platform-backend/tests/**"
+      - "feynman-platform-backend/routes/**"
+      - "feynman-platform-backend/controllers/**"
+      - "feynman-platform-backend/middleware/**"
+      - "feynman-platform-backend/models/**"
+      - "feynman-platform-backend/services/**"
+      - "feynman-platform-backend/package.json"
+      - "feynman-platform-backend/package-lock.json"
+      - ".github/workflows/backend-api-tests.yml"
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: feynman-platform-backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline --save-dev
+
+      - name: Create tests/.env.test from GitHub Secrets
+        shell: bash
+        run: |
+          cat > tests/.env.test <<EOF
+          API_BASE_URL=${{ secrets.API_BASE_URL }}
+          API_TIMEOUT=${{ secrets.API_TIMEOUT }}
+          TEST_USER_EMAIL=${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD=${{ secrets.TEST_USER_PASSWORD }}
+          EOF
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements-test.txt
+
+      - name: Run API tests
+        run: |
+          python -m pytest tests/test_api --alluredir=allure-results
+
+      - name: Generate Allure report
+        if: always()
+        run: |
+          allure generate allure-results -o allure-report --clean
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-allure-results
+          path: feynman-platform-backend/allure-results
+          if-no-files-found: warn
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-allure-report
+          path: feynman-platform-backend/allure-report
+          if-no-files-found: warn

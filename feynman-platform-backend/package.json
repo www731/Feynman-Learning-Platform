@@ -5,7 +5,12 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:api",
+    "test:api": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run_api_tests.ps1 -Suite full",
+    "test:api:smoke": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run_api_tests.ps1 -Suite smoke",
+    "test:api:core": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run_api_tests.ps1 -Suite core",
+    "test:api:report": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run_api_tests.ps1 -Suite full -GenerateReport",
+    "test:api:open-report": "powershell -ExecutionPolicy Bypass -File .\\scripts\\run_api_tests.ps1 -Suite full -GenerateReport -ServeReport"
   },
   "keywords": [],
   "author": "",

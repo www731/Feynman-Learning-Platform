@@ -1,0 +1,17 @@
+# Python test env
+feynman-platform-backend/tests/.env.test
+feynman-platform-backend/tests/.env.test.local
+feynman-platform-backend/tests/.env.test.*.local
+
+# Python virtual env
+feynman-platform-backend/.venv/
+feynman-platform-backend/.venv-test/
+feynman-platform-backend/venv/
+
+# Pytest cache / reports
+feynman-platform-backend/.pytest_cache/
+feynman-platform-backend/**/__pycache__/
+feynman-platform-backend/**/*.pyc
+feynman-platform-backend/report.html
+feynman-platform-backend/htmlcov/
+feynman-platform-backend/.coverage
