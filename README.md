@@ -48,7 +48,7 @@
 
 ## 参考与文档
 - 模块开发卷宗（含 UML 图）：[template4.md](file:///d:/projects/ANDRIOkaifa/front/word/template4.md)
-- 进度与报告：可见 front/word 下的系列模板（已忽略提交）
+
 
 ## 贡献
 - 欢迎通过 Issue/PR 提交优化与功能建议
